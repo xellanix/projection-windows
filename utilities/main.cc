@@ -4,6 +4,7 @@
 #include "utilities.h"
 #include "bind.h"
 #include <shellapi.h>
+#include "resource.h"
 
 #include <iostream>
 #include <random>
@@ -87,7 +88,7 @@ void initWebView(webview::webview& w)
 }
 
 #ifdef _WIN32
-int WINAPI WinMain(HINSTANCE /*hInst*/, HINSTANCE /*hPrevInst*/,
+int WINAPI WinMain(HINSTANCE hInst, HINSTANCE /*hPrevInst*/,
                    LPSTR /*lpCmdLine*/, int /*nCmdShow*/)
 {
     #else
@@ -98,14 +99,14 @@ int main()
     {
         HWND hwnd = NULL;
         webview::webview w(DEBUG, nullptr);
-        w.set_title("Xellanix Projection");
+        w.set_title("Xellanix Projection Utilities");
         w.set_size(480, 320, WEBVIEW_HINT_NONE);
         {
             hwnd = static_cast<HWND>(w.window().value());
             ShowWindow(hwnd, SW_MAXIMIZE);
-            /*const auto icon = LoadIcon(hInst, MAKEINTRESOURCE(IDI_EXAMPLE));
+            const auto icon = LoadIcon(hInst, MAKEINTRESOURCE(IDI_APP_ICON));
             SendMessage(hwnd, WM_SETICON, ICON_BIG, (LPARAM)icon);
-            SendMessage(hwnd, WM_SETICON, ICON_SMALL, (LPARAM)icon);*/
+            SendMessage(hwnd, WM_SETICON, ICON_SMALL, (LPARAM)icon);
         }
         ShowWindow(static_cast<HWND>(w.window().value()), SW_MAXIMIZE);
         initWebView(w);
@@ -132,6 +133,8 @@ int main()
                 w.resolve(id, 0, nlohmann::json("Success").dump());
             });
         }, nullptr);
+        w.bind("exportProjection", exportProjection);
+        w.bind("pack", compress);
         w.bind("closeApp", [&](std::string const&) -> std::string
         {
             SendMessage(hwnd, WM_CLOSE, 0, 0);

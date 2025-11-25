@@ -1,6 +1,7 @@
 #include "webview/webview.h"
 #include "utilities.h"
 #include <wil/com.h>
+#include "resource.h"
 
 #include <iostream>
 
@@ -31,7 +32,7 @@ void initWebView(webview::webview& w)
 }
 
 #ifdef _WIN32
-int WINAPI WinMain(HINSTANCE /*hInst*/, HINSTANCE /*hPrevInst*/,
+int WINAPI WinMain(HINSTANCE hInst, HINSTANCE /*hPrevInst*/,
                    LPSTR /*lpCmdLine*/, int /*nCmdShow*/)
 {
     #else
@@ -47,9 +48,9 @@ int main()
         {
             hwnd = static_cast<HWND>(w.window().value());
             ShowWindow(hwnd, SW_MAXIMIZE);
-            /*const auto icon = LoadIcon(hInst, MAKEINTRESOURCE(IDI_EXAMPLE));
+            const auto icon = LoadIcon(hInst, MAKEINTRESOURCE(IDI_APP_ICON));
             SendMessage(hwnd, WM_SETICON, ICON_BIG, (LPARAM)icon);
-            SendMessage(hwnd, WM_SETICON, ICON_SMALL, (LPARAM)icon);*/
+            SendMessage(hwnd, WM_SETICON, ICON_SMALL, (LPARAM)icon);
         }
         ShowWindow(static_cast<HWND>(w.window().value()), SW_MAXIMIZE);
         initWebView(w);

@@ -322,6 +322,31 @@ inline nlohmann::json build_file_tree_json(const std::vector<std::string>& file_
 
     return result;
 }
+inline nlohmann::json folder_to_json(const fs::path& path, const std::string& alias)
+{
+    nlohmann::json j;
+
+    if (fs::exists(path))
+    {
+        j["data"] = alias.length() > 0 ? alias : path.filename().string();
+
+        if (fs::is_directory(path))
+        {
+            nlohmann::json c = nlohmann::json::array();
+            for (const auto& entry : fs::directory_iterator(path))
+            {
+                c.push_back(folder_to_json(entry, ""));
+            }
+            
+            if (!c.empty())
+            {
+                j["children"] = c;
+            }
+        }
+    }
+
+    return j;
+}
 
 inline std::string open_file_win32()
 {
@@ -339,6 +364,30 @@ inline std::string open_file_win32()
     ofn.lpstrTitle = "Select projection file";
 
     if (GetOpenFileNameA(&ofn))
+    {
+        std::string file = buffer;
+        return file;
+    }
+
+    return "";
+}
+inline std::string save_file_win32()
+{
+    char buffer[8192] = { 0 };  // allocate buffer for multiple file names
+
+    constexpr const char* filter = "Projection Files (*.xpr)\0*.xpr\0\0";
+
+    OPENFILENAMEA ofn = { 0 };
+    ofn.lStructSize = sizeof(ofn);
+    ofn.hwndOwner = nullptr;
+    ofn.lpstrFilter = filter;
+    ofn.lpstrDefExt = "xpr";
+    ofn.lpstrFile = buffer;
+    ofn.nMaxFile = sizeof(buffer);
+    ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST;
+    ofn.lpstrTitle = "Select projection file";
+
+    if (GetSaveFileNameA(&ofn))
     {
         std::string file = buffer;
         return file;

@@ -28,6 +28,20 @@ const steps: Record<string, StepItem[]> = {
             name: "Finish",
         },
     ],
+    "1.2": [
+        {
+            id: "1.2",
+            name: "Content Review",
+        },
+        {
+            id: "1.2.1",
+            name: "Pack Projection",
+        },
+        {
+            id: "1.2.1.1",
+            name: "Finish",
+        }
+    ]
 };
 
 function Navigator() {

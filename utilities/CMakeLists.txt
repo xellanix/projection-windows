@@ -25,7 +25,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(libzip)
 
 add_executable(utilities WIN32)
-target_sources(utilities PRIVATE main.cc "mongoose.h" "mongoose.c" "utilities.h" "bind.h" "json.hpp")
+target_sources(utilities PRIVATE main.cc "mongoose.h" "mongoose.c" "utilities.h" "bind.h" "json.hpp" "resources.rc" "resource.h")
 target_link_libraries(utilities PRIVATE webview::core)
 target_link_libraries(utilities PUBLIC WIL)
 target_link_libraries(utilities PRIVATE libzip::zip)

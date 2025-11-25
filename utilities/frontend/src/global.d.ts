@@ -9,6 +9,8 @@ declare global {
 		build(): Promise<string>;
 		closeApp(): Promise<void>;
 		closeAndStart(): Promise<void>;
+		exportProjection(): Promise<TreeNode[]>;
+		pack(): Promise<string>;
 		// loadTracksMetadata: (tracks: Track[]) => Promise<void>;
 	}
 }

@@ -19,6 +19,6 @@ FetchContent_Declare(WIL
 FetchContent_MakeAvailable(WIL)
 
 add_executable(projection WIN32)
-target_sources(projection PRIVATE main.cc "utilities.h")
+target_sources(projection PRIVATE main.cc "utilities.h" "resources.rc" "resource.h")
 target_link_libraries(projection PRIVATE webview::core)
 target_link_libraries(projection PUBLIC WIL)
